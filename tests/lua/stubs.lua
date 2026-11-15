@@ -17,43 +17,68 @@ NurseNancyVars = {
 }
 
 -- Unit info stubs (can be overridden per-test)
-function UnitClass()  return "Mage",    "MAGE",    8  end
-function UnitName()   return "Testchar", nil,      60 end
-function UnitLevel()  return 60                       end
-function UnitSex()    return 2                        end  -- 2 = male
-function UnitRace()   return "Human",   "Human"       end
+function UnitClass()
+  return "Mage", "MAGE", 8
+end
+function UnitFullName()
+  return "Testchar", nil, 60
+end
+function UnitLevel()
+  return 60
+end
+function UnitSex()
+  return 2
+end -- 2 = male
+function UnitRace()
+  return "Human", "Human"
+end
 
 function GetPlayerInfoByGUID()
   return "Warrior", "WARRIOR", "Human", "Human", 2, "Targetchar", nil
 end
-function UnitGUID()           return "Player-1234-ABCDEF" end
+function UnitGUID()
+  return "Player-1234-ABCDEF"
+end
 
 -- Zone / instance stubs
-function GetZoneText()     return "Stormwind" end
-function GetRealZoneText() return "Stormwind" end
+function GetZoneText()
+  return "Stormwind"
+end
+function GetRealZoneText()
+  return "Stormwind"
+end
 function GetInstanceInfo()
   return "Stormwind", "party", 1, "Normal", 5, 0, false, 1234, 5, 42
 end
-function IsInRaid() return false end
+function IsInRaid()
+  return false
+end
 
 -- Frame / chat stubs
 function CreateFrame()
   return {
-    RegisterEvent     = function() end,
+    RegisterEvent = function() end,
     RegisterUnitEvent = function() end,
-    SetScript         = function() end,
+    SetScript = function() end,
   }
 end
-function SendChatMessage()  end
-function debugPrint()       end
+function SendChatMessage()
+end
+function debugPrint()
+end
 
-C_DateAndTime = {
-  GetCalendarTimeFromEpoch = function() return { month = 6, day = 15 } end
-}
+C_DateAndTime = { GetCalendarTimeFromEpoch = function()
+  return {
+    month = 6,
+    day = 15,
+  }
+end }
 C_ChatInfo = { SendChatMessage = function() end }
 
 -- Random stub – tests override this to select a specific index
-function fastrandom(min, max) return min end
+function fastrandom(min, max)
+  return min
+end
 
 -- ── Test framework ────────────────────────────────────────────────────────────
 
@@ -63,7 +88,9 @@ function assert_equal(actual, expected, label)
   _run = _run + 1
   if actual ~= expected then
     _fail = _fail + 1
-    print(string.format("FAIL [%s]: expected %q, got %q", label, tostring(expected), tostring(actual)))
+    print(
+      string.format("FAIL [%s]: expected %q, got %q", label, tostring(expected), tostring(actual))
+    )
   end
 end
 

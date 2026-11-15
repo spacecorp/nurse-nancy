@@ -80,7 +80,7 @@ end
 local function getCharacterinfo(target)
   local genderTable = { "neuter or unknown", "male", "female" }
   local playerClass, englishClass, classIndex = UnitClass(target)
-  local name, upName, level = UnitName(target)
+  local name, upName, level = UnitFullName(target)
   local unitLevel = UnitLevel(target)
   local gender = genderTable[UnitSex(target)]
   local race, raceEn = UnitRace(target)
@@ -89,7 +89,7 @@ local function getCharacterinfo(target)
 end
 
 function NurseNancy.Helpers.GetTargetInformation()
-  if UnitName("target") then
+  if UnitFullName("target") then
     return getCharacterinfo("target")
   end
 
@@ -101,7 +101,8 @@ function NurseNancy.Helpers.GetTargetInformationByUID(uid)
   local targetClass, engClass, targetRace, engRace, sex, targetName, server
 
   if uid then
-    targetClass, engClass, targetRace, engRace, sex, targetName, server = GetPlayerInfoByGUID(uid)
+    targetClass, engClass, targetRace, engRace, sex, _, server = GetPlayerInfoByGUID(uid)
+    targetName = UnitFullName(uid)
   end
 
   -- UnitSex() does not accept GUIDs; GetPlayerInfoByGUID already returns the sex.
