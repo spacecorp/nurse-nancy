@@ -48,6 +48,8 @@ function NurseNancy.NurseNancy.speakSingleRess(targetGUID, spellId)
       "It just happens that ${targetName} here is only MOSTLY dead.",
       "Now rezzing ${targetName}. Your reputation with [Floor] has been increased by 100.",
       "Wake up! Wake up!, ${targetName}.",
+      "I'm doing my part!, how about you, ${targetName}?",
+      "WoW Forever doesn't mean you can take forever, ${targetName}!",
       "${targetName}, come back! You forgot to pass me your contact details for the afterlife.",
       "I will not accept that ${targetName} actually died. ${targetHeShe} just needs some of my love.",
       "Rezzing: ${targetName}, get back to work!",
@@ -175,7 +177,7 @@ function NurseNancy.NurseNancy.speakSingleRess(targetGUID, spellId)
     table.insert(singleRessLines, "Next time, greet all the cardinal directions, yes?")
   end
 
-  if (playerRace == Class.Shaman) then
+  if (playerClass == Class.Shaman) then
     table.insert(singleRessLines, "I greet the north to ressurrect ${targetName}.")
     table.insert(singleRessLines, "I greet the south to ressurrect ${targetName}.")
     table.insert(singleRessLines, "I greet the east to ressurrect ${targetName}.")

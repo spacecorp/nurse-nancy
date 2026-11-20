@@ -10,6 +10,7 @@
     <Script file="Src/NurseNancy/SpeakSelfRess.lua" />
     <Script file="Src/NurseNancy/SpeakSingleRess.lua" />
     <Script file="Src/NurseNancy/SpeakCombatRess.lua" />
+    <Script file="Src/NurseNancy/PreCombatRes.lua" />
     <Script file="Src/NurseNancy/SpeakMassRess.lua" />
     <Script file="Src/NurseNancy/NurseNancy.lua" />
 </Ui>

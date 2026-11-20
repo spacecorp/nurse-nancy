@@ -69,7 +69,8 @@ local function determineChannel(feature)
     )
   end
 
-  if (feature == "combatRess") then
+  -- Pre-combat ress (soulstone before the pull) uses the combat ress channel settings.
+  if (feature == "combatRess" or feature == "preCombatRess") then
     return getBroadcastChannel(
       NurseNancyVars.combatRess_channel,
       NurseNancyVars.combatRess_instance
@@ -125,7 +126,11 @@ function NurseNancy.NurseNancy.Run()
     local ressType
     if NurseNancy.SpellIds.isMassRess(spellID) then
       ressType = "massRess"
-    elseif NurseNancy.SpellIds.isCombatRess(spellID) then
+    elseif NurseNancy.SpellIds.isPreCombatRess(spellID) and not UnitAffectingCombat("player") then
+      ressType = "preCombatRess"
+    elseif NurseNancy.SpellIds.isCombatRess(spellID) and UnitAffectingCombat("player") then
+      -- Combat ress lines only while actually in combat; out of combat they are not announced
+      -- (soulstones out of combat are handled as preCombatRess above).
       ressType = "combatRess"
     elseif NurseNancy.SpellIds.isSingleRess(spellID) then
       ressType = "singleRess"
@@ -159,6 +164,8 @@ function NurseNancy.NurseNancy.Run()
       ok, line = pcall(function()
         if (ressType == "massRess") then
           return NurseNancy.NurseNancy.speakMassRess()
+        elseif (ressType == "preCombatRess") then
+          return NurseNancy.NurseNancy.speakPreCombatRess(targetGUID, spellID)
         elseif (ressType == "combatRess") then
           return NurseNancy.NurseNancy.speakCombatRess(targetGUID, spellID)
         elseif (ressType == "singleRess") then

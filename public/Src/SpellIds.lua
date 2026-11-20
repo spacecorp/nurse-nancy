@@ -9,8 +9,16 @@ function NurseNancy.SpellIds.isSingleRess(spellId)
     115178, --Monk's Resuscitate
     8342, --Goblin Jumper cables
     22999, --Goblin Jumper cables XL
+    435532, --Goblin Jumper cables wow Forever
     54732, --Gnomish army knife
     361227, -- Evoker's return
+    -- wow forever:
+    ---- druid
+    437138, -- druid revive rank 1
+    1237948, -- druid revive rank 2
+    1237949,-- druid revive rank 3
+    1237950,-- druid revive rank 4
+    1237951,-- druid revive rank 5
     -- Classic flavors use one spell id per rank; retail never fires these.
     2010,
     10880,
@@ -18,10 +26,10 @@ function NurseNancy.SpellIds.isSingleRess(spellId)
     20770,
     25435,
     48171, -- Priest's Resurrection ranks 2-7
-    20609,
-    20610,
-    20776,
-    20777,
+    20609, -- paladin redemption rank 2
+    20610, -- paladin redemption rank 3
+    20776, -- paladin redemption rank 4
+    20777, -- paladin redemption rank 5
     25590,
     49277, -- Shaman's Ancestral Spirit ranks 2-7
     10322,
@@ -66,6 +74,28 @@ function NurseNancy.SpellIds.isCombatRess(spellId)
     20748,
     26994,
     48477, -- Druid's Rebirth ranks 2-7
+    20762,
+    20763,
+    20764,
+    20765,
+    27239,
+    47883, -- Warlock's Soulstone Resurrection ranks 2-7
+  }
+
+  if NurseNancy.Helpers.tableContainsValue(spellIds, spellId) then
+    return true
+  end
+
+  return false
+end
+
+-- Combat ress spells that are usually cast before the pull. When cast out of combat they get
+-- their own lines (PreCombatRes.lua); in combat they still use the combat ress lines.
+-- For now only the Warlock's Soulstone.
+function NurseNancy.SpellIds.isPreCombatRess(spellId)
+  local spellIds = {
+    20707, -- Warlock's soul stone.
+    -- Classic flavors use one spell id per rank; retail never fires these.
     20762,
     20763,
     20764,
