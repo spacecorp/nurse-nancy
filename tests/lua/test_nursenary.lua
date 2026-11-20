@@ -10,10 +10,18 @@ dofile(dir .. "../../public/Src/NurseNancy/NurseNancy.lua")
 
 -- Helpers to configure the stubbed player / target and control line selection.
 local function setPlayer(name, gender, class, race)
-  function UnitClass()  return class, class:upper(), 1 end
-  function UnitName()   return name, nil, 60           end
-  function UnitSex()    return gender == "male" and 2 or 3 end
-  function UnitRace()   return race, race               end
+  function UnitClass()
+    return class, class:upper(), 1
+  end
+  function UnitFullName()
+    return name, nil, 60
+  end
+  function UnitSex()
+    return gender == "male" and 2 or 3
+  end
+  function UnitRace()
+    return race, race
+  end
 end
 
 local function setTarget(name, gender, class, race)
@@ -22,10 +30,23 @@ local function setTarget(name, gender, class, race)
   end
 end
 
-local function pickFirst() fastrandom = function(min, _)   return min end end
-local function pickLast()  fastrandom = function(_, max)   return max end end
+local function pickFirst()
+  fastrandom = function(min, _)
+    return min
+  end
+end
+local function pickLast()
+  fastrandom = function(_, max)
+    return max
+  end
+end
 local function setDate(m, d)
-  C_DateAndTime.GetCalendarTimeFromEpoch = function() return { month = m, day = d } end
+  C_DateAndTime.GetCalendarTimeFromEpoch = function()
+    return {
+      month = m,
+      day = d,
+    }
+  end
 end
 
 -- ── speakSelfRess ─────────────────────────────────────────────────────────────
@@ -49,9 +70,9 @@ pickLast()
 line = NurseNancy.NurseNancy.speakSelfRess(nil, 0)
 assert_no_template(line, "speakSelfRess Shaman last line no template leaks")
 assert_true(
-  line:find("element") ~= nil or line:find("Shaman") ~= nil
-  or line:find("Reincarnati") ~= nil or line:find("beer") ~= nil
-  or line:find("totem") ~= nil or line:find("phoenix") ~= nil,
+  line:find("element") ~= nil or line:find("Shaman") ~= nil or line:find(
+    "Reincarnati"
+  ) ~= nil or line:find("beer") ~= nil or line:find("totem") ~= nil or line:find("phoenix") ~= nil,
   "speakSelfRess Shaman: last line is Shaman-specific"
 )
 
@@ -67,9 +88,12 @@ setDate(4, 4)
 pickLast()
 line = NurseNancy.NurseNancy.speakSelfRess(nil, 0)
 assert_no_template(line, "speakSelfRess Easter line no template leaks")
-assert_true(line:find("egg") ~= nil or line:find("Easter") ~= nil or line:find("bunny") ~= nil
-  or line:find("Risen") ~= nil or line:find("spring") ~= nil or line:find("chocolate") ~= nil,
-  "speakSelfRess Easter: last line is Easter-specific")
+assert_true(
+  line:find("egg") ~= nil or line:find("Easter") ~= nil or line:find("bunny") ~= nil or line:find(
+    "Risen"
+  ) ~= nil or line:find("spring") ~= nil or line:find("chocolate") ~= nil,
+  "speakSelfRess Easter: last line is Easter-specific"
+)
 setDate(6, 15)
 
 -- ── speakSingleRess ───────────────────────────────────────────────────────────
@@ -101,8 +125,10 @@ setTarget("Leafy", "female", "Druid", "Night Elf")
 pickLast()
 line = NurseNancy.NurseNancy.speakSingleRess("uid-002", 2006)
 assert_no_template(line, "speakSingleRess Druid target last line no template leaks")
-assert_true(line:find("root") ~= nil or line:find("RAWR") ~= nil or line:find("Leafy") ~= nil,
-  "speakSingleRess Druid target: last line is Druid-specific")
+assert_true(
+  line:find("root") ~= nil or line:find("RAWR") ~= nil or line:find("Leafy") ~= nil,
+  "speakSingleRess Druid target: last line is Druid-specific"
+)
 
 -- Christmas holiday.
 setTarget("Tanky", "male", "Warrior", "Human")
@@ -110,9 +136,12 @@ setDate(12, 25)
 pickLast()
 line = NurseNancy.NurseNancy.speakSingleRess("uid-001", 2006)
 assert_no_template(line, "speakSingleRess Christmas last line no template leaks")
-assert_true(line:find("Christmas") ~= nil or line:find("naughty") ~= nil
-  or line:find("Santa") ~= nil or line:find("gift") ~= nil,
-  "speakSingleRess Christmas: last line is Christmas-specific")
+assert_true(
+  line:find("Christmas") ~= nil or line:find("naughty") ~= nil or line:find(
+    "Santa"
+  ) ~= nil or line:find("gift") ~= nil,
+  "speakSingleRess Christmas: last line is Christmas-specific"
+)
 setDate(6, 15)
 
 -- ── speakCombatRess ───────────────────────────────────────────────────────────
@@ -128,24 +157,33 @@ assert_no_template(line, "speakCombatRess first line no template leaks")
 
 NurseNancyVars.usePrefix = true
 line = NurseNancy.NurseNancy.speakCombatRess("uid-003", 61999)
-assert_true(line:find("%[Combat ressing Priesty%]") ~= nil, "speakCombatRess prefix contains target name")
+assert_true(
+  line:find("%[Combat ressing Priesty%]") ~= nil,
+  "speakCombatRess prefix contains target name"
+)
 NurseNancyVars.usePrefix = false
 
 -- Death Knight extra lines appended; pickLast should hit one.
 pickLast()
 line = NurseNancy.NurseNancy.speakCombatRess("uid-003", 61999)
 assert_no_template(line, "speakCombatRess DK last line no template leaks")
-assert_true(line:find("Lich") ~= nil or line:find("undeath") ~= nil
-  or line:find("Necromancer") ~= nil or line:find("abomination") ~= nil
-  or line:find("brittle") ~= nil or line:find("limb") ~= nil
-  or line:find("shotgun") ~= nil or line:find("hell") ~= nil,
-  "speakCombatRess DK: last line is DK-specific")
+assert_true(
+  line:find("Lich") ~= nil or line:find("undeath") ~= nil or line:find(
+    "Necromancer"
+  ) ~= nil or line:find("abomination") ~= nil or line:find("brittle") ~= nil or line:find(
+    "limb"
+  ) ~= nil or line:find("shotgun") ~= nil or line:find("hell") ~= nil,
+  "speakCombatRess DK: last line is DK-specific"
+)
 
 -- Warlock overrides the prefix to [Soulstone on ...].
 setPlayer("Warlie", "male", "Warlock", "Human")
 NurseNancyVars.usePrefix = true
 line = NurseNancy.NurseNancy.speakCombatRess("uid-003", 20707)
-assert_true(line:find("%[Soulstone on Priesty%]") ~= nil, "speakCombatRess Warlock soulstone prefix")
+assert_true(
+  line:find("%[Soulstone on Priesty%]") ~= nil,
+  "speakCombatRess Warlock soulstone prefix"
+)
 NurseNancyVars.usePrefix = false
 
 -- ── speakMassRess ─────────────────────────────────────────────────────────────
@@ -160,25 +198,34 @@ assert_no_template(line, "speakMassRess first line no template leaks")
 
 NurseNancyVars.usePrefix = true
 line = NurseNancy.NurseNancy.speakMassRess()
-assert_true(line:find("%[Mass ressing%]") ~= nil, "speakMassRess prefix applied when usePrefix=true")
+assert_true(
+  line:find("%[Mass ressing%]") ~= nil,
+  "speakMassRess prefix applied when usePrefix=true"
+)
 NurseNancyVars.usePrefix = false
 
 -- Priest extra lines; pickLast should hit one.
 pickLast()
 line = NurseNancy.NurseNancy.speakMassRess()
 assert_no_template(line, "speakMassRess Priest last line no template leaks")
-assert_true(line:find("afterlife") ~= nil or line:find("seminary") ~= nil
-  or line:find("second chance") ~= nil or line:find("thank%-you") ~= nil,
-  "speakMassRess Priest: last line is Priest-specific")
+assert_true(
+  line:find("afterlife") ~= nil or line:find("seminary") ~= nil or line:find(
+    "second chance"
+  ) ~= nil or line:find("thank%-you") ~= nil,
+  "speakMassRess Priest: last line is Priest-specific"
+)
 
 -- Paladin extra lines.
 setPlayer("Pallie", "male", "Paladin", "Human")
 pickLast()
 line = NurseNancy.NurseNancy.speakMassRess()
 assert_no_template(line, "speakMassRess Paladin last line no template leaks")
-assert_true(line:find("Light") ~= nil or line:find("owe me one") ~= nil
-  or line:find("champions") ~= nil or line:find("fancy") ~= nil,
-  "speakMassRess Paladin: last line is Paladin-specific")
+assert_true(
+  line:find("Light") ~= nil or line:find("owe me one") ~= nil or line:find(
+    "champions"
+  ) ~= nil or line:find("fancy") ~= nil,
+  "speakMassRess Paladin: last line is Paladin-specific"
+)
 
 -- Christmas mass ress holiday.
 setPlayer("Holyroller", "female", "Priest", "Human")
@@ -186,9 +233,10 @@ setDate(12, 26)
 pickLast()
 line = NurseNancy.NurseNancy.speakMassRess()
 assert_no_template(line, "speakMassRess Christmas last line no template leaks")
-assert_true(line:find("Christmas") ~= nil or line:find("Santa") ~= nil
-  or line:find("dinner") ~= nil,
-  "speakMassRess Christmas: last line is Christmas-specific")
+assert_true(
+  line:find("Christmas") ~= nil or line:find("Santa") ~= nil or line:find("dinner") ~= nil,
+  "speakMassRess Christmas: last line is Christmas-specific"
+)
 setDate(6, 15)
 
 report("nursenary")
